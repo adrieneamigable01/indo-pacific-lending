@@ -1,7 +1,7 @@
 <?php
 include 'config.php';
 
-$list = $conn->query("SELECT * FROM loan_applications ORDER BY id DESC");
+$list = $conn->query("SELECT * FROM loan_applications WHERE isActive = 1 ORDER BY id DESC");
 ?>
 
 <!DOCTYPE html>
@@ -133,11 +133,6 @@ $list = $conn->query("SELECT * FROM loan_applications ORDER BY id DESC");
                     <td><?= $row['mobile_no']; ?></td>
 
                     <td>
-                        <!-- <a href="delete.php?id=<?= $row['id']; ?>"
-                           class="btn btn-danger btn-sm"
-                           onclick="return confirm('Delete this record?')">
-                           Delete
-                        </a> -->
                         <button type="button" 
                             class="btn btn-primary btn-sm edit-borrower-btn" 
                             data-bs-toggle="modal" 
@@ -176,6 +171,12 @@ $list = $conn->query("SELECT * FROM loan_applications ORDER BY id DESC");
                            target="_blank"
                            class="btn btn-success btn-sm">
                            Print
+                        </a>
+                        
+                        <a href="delete.php?id=<?= $row['id']; ?>"
+                           class="btn btn-danger btn-sm"
+                           onclick="return confirm('Delete this record?')">
+                           Delete
                         </a>
                     </td>
                 </tr>
