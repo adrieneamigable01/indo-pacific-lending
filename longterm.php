@@ -796,7 +796,7 @@ function numberTowords($num)
         </div>
 
         <div class="text-center" style="margin-top:20px;">
-            <b>INDOPACIFIC LENDING CORPORATION</b><br>
+            <b>INDO - PACIFIC LENDING CORPORATION</b><br>
             <i>Duly represented by:</i> <br><br><br>
             <u><b> Ricaplaza Raven Wyndell </b></u>
         </div>
