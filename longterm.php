@@ -1015,32 +1015,31 @@ function numberTowords($num)
                             $interest = 0;
                             if(floatval($amountData) >= 450000){
                                
-                                $interest = ( $amountData * .01 ) ;
+                                $principal = $amountData;
+                                $term = 120;
 
-                                $interestTenYears = $interest * 120 ;
-                                $interestSevenYear = $interestTenYears / 7;
+                                $interest = $principal * .01;
+                                $principal = number_format((float)($principal / $term), 2, '.', '');
+                                $date = $single_loan[0]['released_date'];
 
-                                $principalPayment = $amountData / 120;
+                                $yearlyInterest = ($interest * $single_loan[0]['term']) / 7;
+                                $yearlyPrincipal = 121000 - $yearlyInterest;
+                                
+                                $yearlyInterest = number_format((float)($yearlyInterest), 2, '.', '');
+                                $yearlyPrincipal = number_format((float)($yearlyPrincipal), 2, '.', '');
 
-                                $totalPaymentPerAnnum =  ( $principalPayment + $interest );
+                                // $total = $interest + $principal;
 
-                                $principal = $i > 7 ? $totalPaymentPerAnnum : $totalPaymentPerAnnum - $interestTenYears;
+                                $total -= $i > 7 ? ($yearlyInterest + $yearlyPrincipal) : $yearlyPrincipal; 
 
-                                $totalpayment = $principal + $interest;
-
-                                $balance = $i > 7 ? floatval($balance) - floatval($totalpayment)  : floatval($balance) - floatval($principal);
-
-                                $principal = number_format($principal, 2, ".", ",");
-                                $interest = number_format($interest, 2, ".", ",");
-                                $totalpayment = number_format($totalpayment, 2, ".", ",");
-                                $balance = $balance < 0 ? 0 : number_format((float)($balance), 2, '.', '');
+                                $total =  $total < 1 ? 0 :  number_format((float)($total), 2, '.', '');;
 
                                 echo "<tr>";
                                 echo "<td>".$i."</td>";
-                                echo "<td>".($i > 7 ? ($totalpayment) : $principal)."</td>";
-                                echo "<td>".($i > 7 ? 0 : $interest)."</td>";
-                                echo "<td>".$totalpayment."</td>";
-                                echo "<td>".$balance."</td>";
+                                echo "<td>".($i > 7 ? ($yearlyInterest + $yearlyPrincipal) : $yearlyPrincipal)."</td>";
+                                echo "<td>".($i > 7 ? 0 : $yearlyInterest)."</td>";
+                                echo "<td>".$total."</td>";
+                                echo "<td>".$total."</td>";
                                 echo "</tr>";
                             }else{
 
