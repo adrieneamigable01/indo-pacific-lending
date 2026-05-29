@@ -475,7 +475,7 @@ function numberTowords($num)
                     request a copy of his/her Statement of Account in person shall allow the latter to deny their 
                     request for prepayment. <b>In case the PRINCIPAL BORROWER AND CO-BORROWER choose to prepay the 
                     principal amount and the accrued interest, the LENDER shall charge a 
-                    Pre-payment/Pre-term Fee of 2% of the total outstanding principal obligation.</b>
+                    Pre-payment/Pre-term Fee of 20% of the total outstanding principal obligation.</b>
 
                
 
