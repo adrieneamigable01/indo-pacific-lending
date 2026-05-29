@@ -265,6 +265,56 @@ function numberTowords($num)
     return $rettxt;
 }
 
+
+function percentageToWords($number)
+{
+    $ones = array(
+        0 => "ZERO",
+        1 => "ONE",
+        2 => "TWO",
+        3 => "THREE",
+        4 => "FOUR",
+        5 => "FIVE",
+        6 => "SIX",
+        7 => "SEVEN",
+        8 => "EIGHT",
+        9 => "NINE"
+    );
+       
+    // Convert number to string
+    $number = trim((string)$number);
+    
+    // If decimal exists
+    if (strpos($number, '.') !== false) {
+
+        $parts = explode('.', $number);
+
+        $wholePart = intval($parts[0]);
+        $decimalPart = $parts[1];
+          
+        // Whole number wording
+        $result = trim(toText($wholePart));
+
+        // Add POINT
+        $result .= " POINT";
+         
+        // Decimal digits one by one
+        for ($i = 0; $i < strlen($decimalPart); $i++) {
+
+            $digit = $decimalPart[$i];
+
+            if (is_numeric($digit)) {
+                $result .= " " . $ones[intval($digit)];
+            }
+        }
+        
+        return strtoupper(trim($result));
+    } else {
+
+        return strtoupper(trim(toText(intval($number))));
+    }
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -445,7 +495,7 @@ function numberTowords($num)
             <b><?php echo strtoupper(toText($amountData)) ?> PESOS</b>
             <b>(PHP. <?php echo number_format($amountData, 2, ".", ",") ?>)</b>, 
             together with the <b>ONE POINT FIVE PERCENT (1.5%)</b> service charge on the principal amount and an interest 
-            rate of <b><?php echo strtoupper(toText($data['interest_rate'])) ?> PERCENT (<?php echo $data['interest_rate'] ?>%)</b> PER MONTH OR <b><?php echo strtoupper(toText($data['interest_rate'] * 12)) ?> PERCENT (<?php echo $data['interest_rate'] * 12 ?>%)<</b> 
+            rate of <b><?php echo strtoupper(percentageToWords((float)($data['interest_rate']))) ?> PERCENT (<?php echo $data['interest_rate'] ?>%)</b> PER MONTH OR <b><?php echo strtoupper(percentageToWords($data['interest_rate'] * 12)) ?> PERCENT (<?php echo $data['interest_rate'] * 12 ?>%)<</b> 
             PER ANNUM, subject further to the terms and conditions set forth below
         </div>
 
@@ -556,7 +606,7 @@ function numberTowords($num)
                     <br><br>
                     The PRINCIPAL BORROWER undertake to maintain sufficient funds in the enrolled account to cover all amount 
                     due therein. In the event of insufficiency of funds in the enrolled account, the PRINCIPAL BORROWER shall 
-                    be liable for a penalty fee of ONE THOUSAND PESOS (Php. 1,000.00) per attempt without regard to the other 
+                    be liable for a penalty fee of TEN PERCENT (10%) per attempt without regard to the other 
                     fees and charges which maybe imposed under this Contract of Loan and the law.
                     <br><br>
                     The Auto Debit Agreement shall be in force until the principal and the interest together with any 
@@ -980,7 +1030,7 @@ function numberTowords($num)
                         </tr>
                         <tr>
                             <td style="width:50%;">INTEREST PAYMENT</td>
-                            <td style="width:50%;">(A) <?php echo ucwords(toText($data['interest_rate'])).' '.$data['interest_rate'].'%' ?></td>
+                            <td style="width:50%;">(A) <?php echo ucwords(percentageToWords($data['interest_rate'])).' '.$data['interest_rate'].'%' ?></td>
                         </tr>
                     </tbody>
                 </table>
@@ -991,7 +1041,7 @@ function numberTowords($num)
                     <th>PRINCIPAL</th>
                     <th>INTEREST</th>
                     <th>TOTAL PAYMENT</th>
-                    <th>BALANACE</th>
+                    <th>BALANCE</th>
                 </tr>
                 
                     <?php
