@@ -1000,7 +1000,7 @@ function numberTowords($num)
                         $term = 12;
                         $totalpayment = 0;
                         $date = date("Y-m-d");
-                        if(floatval($amountData) >= 550000){
+                        if(floatval($amountData) >= 450000){
                             $term = 10;
                         }
                         for ($i = 1; $i <= $term ; $i++) {
@@ -1013,9 +1013,10 @@ function numberTowords($num)
                             
                             $principal = 0;
                             $interest = 0;
-                            if(floatval($amountData) >= 550000){
-                                $principal = 26714.30;
-                                $interest = 94285.7143;
+                            if(floatval($amountData) >= 450000){
+                               
+                                $interest = ( ( $amountData * .01 ) * 120 ) / 7 ;
+                                $principal = $i > 7 ? 121000 : 121000 - $interest;
                                 $totalpayment = $principal + $interest;
                                 $balance = $i > 7 ? floatval($balance) - floatval($totalpayment)  : floatval($balance) - floatval($principal);
 
