@@ -1024,7 +1024,7 @@ function numberTowords($num)
 
                                 $totalPaymentPerAnnum =  ( $principalPayment + $interest );
 
-                                $principal = $i > 7 ? $totalPaymentPerAnnum : $totalPaymentPerAnnum - $interest;
+                                $principal = $i > 7 ? $totalPaymentPerAnnum : $totalPaymentPerAnnum - $interestTenYears;
 
                                 $totalpayment = $principal + $interest;
 
