@@ -1020,9 +1020,9 @@ function numberTowords($num)
 
                                 $interest = $principal * .01;
                                 $principal = number_format((float)($principal / $term), 2, '.', '');
-                                $date = $single_loan[0]['released_date'];
+                                $date = date("Y-m-d");
 
-                                $yearlyInterest = ($interest * $single_loan[0]['term']) / 7;
+                                $yearlyInterest = ($interest * 120) / 7;
                                 $yearlyPrincipal = 121000 - $yearlyInterest;
                                 
                                 $yearlyInterest = number_format((float)($yearlyInterest), 2, '.', '');
