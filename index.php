@@ -109,11 +109,11 @@ $list = $conn->query("SELECT * FROM loan_applications ORDER BY id DESC");
                     <td><?= $row['mobile_no']; ?></td>
 
                     <td>
-                        <a href="delete.php?id=<?= $row['id']; ?>"
+                        <!-- <a href="delete.php?id=<?= $row['id']; ?>"
                            class="btn btn-danger btn-sm"
                            onclick="return confirm('Delete this record?')">
                            Delete
-                        </a>
+                        </a> -->
 
                         <a href="print.php?id=<?= $row['id']; ?>"
                            target="_blank"
