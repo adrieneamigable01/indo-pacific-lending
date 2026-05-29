@@ -1016,7 +1016,6 @@ function numberTowords($num)
                             if(floatval($amountData) >= 450000){
                                
                                 $principal = $amountData;
-                                $term = 120;
 
                                 $interest = $principal * .01;
                                 $principal = number_format((float)($principal / $term), 2, '.', '');
