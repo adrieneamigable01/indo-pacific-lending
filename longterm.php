@@ -1022,9 +1022,12 @@ function numberTowords($num)
 
                                 $principalPayment = $amountData / 120;
 
-                                $totalPaymentPerAnnum =  ( $principalPayment + $interest ) * 12;
+                                $totalPaymentPerAnnum =  ( $principalPayment + $interest );
+
                                 $principal = $i > 7 ? $totalPaymentPerAnnum : $totalPaymentPerAnnum - $interest;
+
                                 $totalpayment = $principal + $interest;
+
                                 $balance = $i > 7 ? floatval($balance) - floatval($totalpayment)  : floatval($balance) - floatval($principal);
 
                                 $principal = number_format($principal, 2, ".", ",");
