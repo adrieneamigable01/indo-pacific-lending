@@ -151,279 +151,242 @@ $list = $conn->query("SELECT * FROM loan_applications ORDER BY id DESC");
 
 <!-- CREATE BORROWER MODAL -->
 <div class="modal fade" id="borrowerModal" tabindex="-1">
-
     <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content border-0 shadow-sm">
 
-        <div class="modal-content">
-
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title">Create Loan Application</h5>
-
-                <button type="button"
-                        class="btn-close btn-close-white"
-                        data-bs-dismiss="modal"></button>
+            <!-- Header -->
+            <div class="modal-header bg-primary text-white border-bottom-0 py-3">
+                <h5 class="modal-title fw-semibold">Create Loan Application</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
 
             <form method="POST" action="save.php">
+                <div class="modal-body p-4 bg-light">
+                    <div class="row g-3">
 
-                <div class="modal-body">
-
-                    <div class="row">
-                        <div class="col-md-3 mb-3">
-                            <label>FROM BPLC BORROWER</label>
-                             <select id="bplc_borrower" class="form-control">
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        
-                        
-
-
-                        <div class="col-md-4 mb-3">
-                            <label>Last Name</label>
-                            <input type="text"
-                                name="last_name"
-                                class="form-control"
-                                required>
-                        </div>
-
-                        <div class="col-md-4 mb-3">
-                            <label>First Name</label>
-                            <input type="text"
-                                name="first_name"
-                                class="form-control"
-                                required>
-                        </div>
-
-                        <div class="col-md-4 mb-3">
-                            <label>Middle Name</label>
-                            <input type="text"
-                                name="middle_name"
-                                class="form-control">
-                        </div>
-
-                        <div class="col-md-3 mb-3">
-                            <label>Date of Birth</label>
-                            <input type="date"
-                                   name="date_of_birth"
-                                   class="form-control">
-                        </div>
-
-                        <div class="col-md-3 mb-3">
-                            <label>Civil Status</label>
-                             <select name="civil_status" class="form-control">
-                                <option>Single</option>
-                                <option>Married</option>
-                                <option>Widowed</option>
-                                <option>Separated</option>
-                            </select>
-                        </div>
-
-                        <div class="col-md-3 mb-3">
-                            <label>Gender</label>
-
-                            <select name="gender" class="form-control">
-                                <option>Male</option>
-                                <option>Female</option>
-                            </select>
-                        </div>
-
-                        <div class="col-md-3 mb-3">
-                            <label>Mobile Number</label>
-                            <input type="text"
-                                   name="mobile_no"
-                                   class="form-control">
-                        </div>
-
-                        <div class="col-md-3 mb-3">
-                            <label>TIN Number</label>
-                            <input type="text"
-                                   name="tin_no"
-                                   class="form-control">
-                        </div>
-
-                        <div class="col-md-3 mb-3">
-                            <label>ID Presented</label>
-                            <input type="text"
-                                   name="id_presented"
-                                   class="form-control">
-                        </div>
-
-                        <div class="col-md-6 mb-3">
-                            <label>Email Address</label>
-                            <input type="email"
-                                   name="email_address"
-                                   class="form-control">
-                        </div>
-
-                        <div class="col-md-6 mb-3">
-                            <label>Home Address</label>
-                            <textarea name="home_address"
-                                      class="form-control"></textarea>
-                        </div>
-
-                        <div class="col-md-6 mb-3">
-                            <label>Company / School</label>
-                            <input type="text"
-                                   name="company_school"
-                                   class="form-control">
-                        </div>
-
-                        <div class="col-md-6 mb-3">
-                            <label>Employer Name</label>
-                            <input type="text"
-                                   name="employer_name"
-                                   class="form-control">
-                        </div>
-
-                        <div class="col-md-4 mb-3">
-                            <label>Position</label>
-                            <input type="text"
-                                   name="position_name"
-                                   class="form-control">
-                        </div>
-
-                        <div class="col-md-4 mb-3">
-                            <label>Basic Salary</label>
-                            <input type="number"
-                                   step="0.01"
-                                   name="basic_salary"
-                                   class="form-control">
-                        </div>
-
-                        <div class="col-md-4 mb-3">
-                            <label>Annual Income</label>
-                            <input type="number"
-                                   step="0.01"
-                                   name="annual_income"
-                                   class="form-control">
-                        </div>
-
-                        <div class="col-md-6 mb-3">
-                            <label>Spouse Name</label>
-                            <input type="text"
-                                   name="spouse_name"
-                                   class="form-control">
-                        </div>
-                        <div class="col-md-12 mb-3">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <label><strong>Collateral</strong></label>
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <label>PRIMARY CARD TYPE</label>
-                                <select name="primary_card_name" class="form-control">
-                                    <option value="Development Bank of the Philippines (DBP)">Development Bank of the Philippines (DBP)</option>
-                                    <option value="LAND BANK OF THE PHILIPPINES ( UMID )">LAND BANK OF THE PHILIPPINES ( UMID )</option>
+                        <!-- Profile Lookup -->
+                        <div class="col-12">
+                            <div class="card border-0 shadow-sm p-3">
+                                <label class="form-label text-muted small fw-bold">FROM BPLC BORROWER</label>
+                                <select id="bplc_borrower" class="form-control">
+                                    <!-- Original selector kept exactly as is -->
                                 </select>
                             </div>
-                            <div class="col-md-6 mb-3">
-                                <label>PRIMARY CARD NUMBER</label>
-                                <input type="text"
-                                    name="primary_card_number"
-                                    class="form-control">
-                            </div>
-
-                            <div class="col-md-3 mb-3">
-                                <label>PRIMARY CARD TYPE</label>
-                                <select name="secondary_card_name" class="form-control">
-                                    <option value="Development Bank of the Philippines (DBP)">Development Bank of the Philippines (DBP)</option>
-                                    <option value="LAND BANK OF THE PHILIPPINES ( UMID )">LAND BANK OF THE PHILIPPINES ( UMID )</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label>PRIMARY CARD NUMBER</label>
-                                <input type="text"
-                                    name="secondary_card_number"
-                                    class="form-control">
-                            </div>
                         </div>
-                        <!-- ================= CO-MAKER DYNAMIC SECTION ================= -->
 
-                        <div class="col-md-12 mb-3">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <label><strong>Co-Maker Information</strong></label>
+                        <!-- Personal Information -->
+                        <div class="col-12">
+                            <div class="card border-0 shadow-sm p-4">
+                                <h6 class="text-primary fw-bold mb-3 border-bottom pb-2">Personal Information</h6>
+                                <div class="row g-3">
+                                    <div class="col-md-4">
+                                        <label class="form-label text-muted small fw-semibold">Last Name</label>
+                                        <input type="text" name="last_name" class="form-control" required>
+                                    </div>
 
-                                <button type="button" id="addCoMaker" class="btn btn-sm btn-primary">
-                                    + Add Co-Maker
-                                </button>
-                            </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label text-muted small fw-semibold">First Name</label>
+                                        <input type="text" name="first_name" class="form-control" required>
+                                    </div>
 
-                            <div id="coMakerContainer">
+                                    <div class="col-md-4">
+                                        <label class="form-label text-muted small fw-semibold">Middle Name</label>
+                                        <input type="text" name="middle_name" class="form-control">
+                                    </div>
 
-                                <!-- DEFAULT CO-MAKER -->
-                                <div class="co-maker-item border rounded p-3 mt-2">
+                                    <div class="col-md-3">
+                                        <label class="form-label text-muted small fw-semibold">Date of Birth</label>
+                                        <input type="date" name="date_of_birth" class="form-control">
+                                    </div>
 
+                                    <div class="col-md-3">
+                                        <label class="form-label text-muted small fw-semibold">Civil Status</label>
+                                        <select name="civil_status" class="form-control">
+                                            <option>Single</option>
+                                            <option>Married</option>
+                                            <option>Widowed</option>
+                                            <option>Separated</option>
+                                        </select>
+                                    </div>
 
+                                    <div class="col-md-3">
+                                        <label class="form-label text-muted small fw-semibold">Gender</label>
+                                        <select name="gender" class="form-control">
+                                            <option>Male</option>
+                                            <option>Female</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label class="form-label text-muted small fw-semibold">Mobile Number</label>
+                                        <input type="text" name="mobile_no" class="form-control">
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label class="form-label text-muted small fw-semibold">TIN Number</label>
+                                        <input type="text" name="tin_no" class="form-control">
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label class="form-label text-muted small fw-semibold">ID Presented</label>
+                                        <input type="text" name="id_presented" class="form-control">
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label text-muted small fw-semibold">Email Address</label>
+                                        <input type="email" name="email_address" class="form-control">
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label text-muted small fw-semibold">Home Address</label>
+                                        <textarea name="home_address" class="form-control" rows="1"></textarea>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label text-muted small fw-semibold">Spouse Name</label>
+                                        <input type="text" name="spouse_name" class="form-control">
+                                    </div>
                                 </div>
-
                             </div>
                         </div>
 
-                        <div class="col-md-4 mb-3">
-                            <label>Loan Type</label>
-                            <select name="loan_type" class="form-control">
-                                <option value="LONG TERM LOAN">LONG TERM LOAN</option>
-                                <option value="SHORT TERM LOAN">SHORT TERM LOAN</option>
-                            </select>
+                        <!-- Employment Information -->
+                        <div class="col-12">
+                            <div class="card border-0 shadow-sm p-4">
+                                <h6 class="text-primary fw-bold mb-3 border-bottom pb-2">Employment & Income Details</h6>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label text-muted small fw-semibold">Company / School</label>
+                                        <input type="text" name="company_school" class="form-control">
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label text-muted small fw-semibold">Employer Name</label>
+                                        <input type="text" name="employer_name" class="form-control">
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label class="form-label text-muted small fw-semibold">Position</label>
+                                        <input type="text" name="position_name" class="form-control">
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label class="form-label text-muted small fw-semibold">Basic Salary</label>
+                                        <input type="number" step="0.01" name="basic_salary" class="form-control">
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label class="form-label text-muted small fw-semibold">Annual Income</label>
+                                        <input type="number" step="0.01" name="annual_income" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="col-md-4 mb-3">
-                            <label>Loan Amount</label>
-                            <input type="number"
-                                   step="0.01"
-                                   name="loan_amount"
-                                   class="form-control">
+                        <!-- Card Collateral Details -->
+                        <div class="col-12">
+                            <div class="card border-0 shadow-sm p-4">
+                                <div class="mb-3">
+                                    <label class="form-label m-0"><strong>Collateral</strong></label>
+                                </div>
+                                <div class="row g-3">
+                                    <div class="col-md-3">
+                                        <label class="form-label text-muted small fw-semibold">PRIMARY CARD TYPE</label>
+                                        <select name="primary_card_name" class="form-control">
+                                            <option value="Development Bank of the Philippines (DBP)">Development Bank of the Philippines (DBP)</option>
+                                            <option value="LAND BANK OF THE PHILIPPINES ( UMID )">LAND BANK OF THE PHILIPPINES ( UMID )</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <label class="form-label text-muted small fw-semibold">PRIMARY CARD NUMBER</label>
+                                        <input type="text" name="primary_card_number" class="form-control">
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label class="form-label text-muted small fw-semibold">SECONDARY CARD TYPE</label>
+                                        <select name="secondary_card_name" class="form-control">
+                                            <option value="Development Bank of the Philippines (DBP)">Development Bank of the Philippines (DBP)</option>
+                                            <option value="LAND BANK OF THE PHILIPPINES ( UMID )">LAND BANK OF THE PHILIPPINES ( UMID )</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <label class="form-label text-muted small fw-semibold">SECONDARY CARD NUMBER</label>
+                                        <input type="text" name="secondary_card_number" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="col-md-4 mb-3">
-                            <label>Loan Terms</label>
-                            <input type="text"
-                                   name="loan_terms"
-                                   class="form-control">
+                        <!-- Dynamic Co-Maker Section -->
+                        <div class="col-12">
+                            <div class="card border-0 shadow-sm p-4">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <label class="m-0"><strong>Co-Maker Information</strong></label>
+                                    <button type="button" id="addCoMaker" class="btn btn-sm btn-primary px-3 rounded-pill">
+                                        + Add Co-Maker
+                                    </button>
+                                </div>
+                                <div id="coMakerContainer">
+                                    <!-- DEFAULT CO-MAKER CONTAINER BLANK AS PROVIDED -->
+                                    <div class="co-maker-item border rounded p-3 mt-2"></div>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="col-md-6 mb-3">
-                            <label>Collateral</label>
-                            <input type="text"
-                                   name="collateral"
-                                   class="form-control">
-                        </div>
+                        <!-- Loan Specifications -->
+                        <div class="col-12">
+                            <div class="card border-0 shadow-sm p-4">
+                                <h6 class="text-primary fw-bold mb-3 border-bottom pb-2">Loan Terms & Details</h6>
+                                <div class="row g-3">
+                                    <div class="col-md-4">
+                                        <label class="form-label text-muted small fw-semibold">Loan Type</label>
+                                        <select name="loan_type" class="form-control">
+                                            <option value="LONG TERM LOAN">LONG TERM LOAN</option>
+                                            <option value="SHORT TERM LOAN">SHORT TERM LOAN</option>
+                                        </select>
+                                    </div>
 
-                        <div class="col-md-6 mb-3">
-                            <label>Interest Rate</label>
-                             <select name="interest_rate" class="form-control">
-                                <option value="1.428">1.428%</option>
-                                <option value="3">3%</option>
-                                <option value="2">2%</option>
-                                <option value="1">1%</option>
-                            </select>
-                        </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label text-muted small fw-semibold">Loan Amount</label>
+                                        <input type="number" step="0.01" name="loan_amount" class="form-control">
+                                    </div>
 
-                        <div class="col-md-12 mb-3">
-                            <label>Loan Purpose</label>
+                                    <div class="col-md-4">
+                                        <label class="form-label text-muted small fw-semibold">Loan Terms</label>
+                                        <input type="text" name="loan_terms" class="form-control">
+                                    </div>
 
-                            <textarea name="loan_purpose"
-                                      class="form-control"></textarea>
+                                    <div class="col-md-6">
+                                        <label class="form-label text-muted small fw-semibold">Collateral</label>
+                                        <input type="text" name="collateral" class="form-control">
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label text-muted small fw-semibold">Interest Rate</label>
+                                        <select name="interest_rate" class="form-control">
+                                            <option value="1.428">1.428%</option>
+                                            <option value="3">3%</option>
+                                            <option value="2">2%</option>
+                                            <option value="1">1%</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <label class="form-label text-muted small fw-semibold">Loan Purpose</label>
+                                        <textarea name="loan_purpose" class="form-control" rows="3"></textarea>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                     </div>
-
                 </div>
 
-                <div class="modal-footer">
-                    <button type="button"
-                            class="btn btn-secondary"
-                            data-bs-dismiss="modal">
-                        Close
-                    </button>
-
-                    <button class="btn btn-primary">
-                        Save Application
-                    </button>
+                <!-- Footer -->
+                <div class="modal-footer bg-white border-top-0 p-3">
+                    <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">Close</button>
+                    <button class="btn btn-primary px-4">Save Application</button>
                 </div>
-
             </form>
 
         </div>
