@@ -995,6 +995,7 @@ function numberTowords($num)
                 </tr>
                 
                     <?php
+                    
                         $total = $amountData;
                         $balance =  $amountData; 
                         $term = 12;
@@ -1015,21 +1016,28 @@ function numberTowords($num)
                             $interest = 0;
                             if(floatval($amountData) >= 450000){
                                
-                                $interest = ( ( $amountData * .01 ) * 120 ) / 7 ;
-                                $principal = $i > 7 ? 121000 : 121000 - $interest;
-                                $totalpayment = $principal + $interest;
-                                $balance = $i > 7 ? floatval($balance) - floatval($totalpayment)  : floatval($balance) - floatval($principal);
+                                $principal = $amountData;
+                                
+                                $interest = (float)($principal) * .01;
+                                $principal = $principal / ($term * 12);
+                               
+                                $yearlyCollection = ((float)($interest) + (float)($principal)) * 12;
+                                $yearlyCollection = number_format($yearlyCollection , 2, '.', '');
+                                $date = date("Y-m-d");
 
-                                $principal = number_format($principal, 2, ".", ",");
-                                $interest = number_format($interest, 2, ".", ",");
-                                $totalpayment = number_format($totalpayment, 2, ".", ",");
-                                $balance = $balance < 0 ? 0 : number_format((float)($balance), 2, '.', '');
+                                $yearlyInterest = ($interest * 120) / 7;
 
+                                $sevenYearsPrincipal = $yearlyCollection - $yearlyInterest;
+                               
+
+                                $balance = floatval($balance) - ($i > 7 ? (floatval($yearlyCollection)) : (floatval($sevenYearsPrincipal)));
+                                $balance = $balance < 1 ? 0 : number_format((float)($balance), 2, '.', '');
+                                $sevenYearsPrincipal = number_format($sevenYearsPrincipal);
                                 echo "<tr>";
                                 echo "<td>".$i."</td>";
-                                echo "<td>".($i > 7 ? ($totalpayment) : $principal)."</td>";
-                                echo "<td>".($i > 7 ? 0 : $interest)."</td>";
-                                echo "<td>".$totalpayment."</td>";
+                                echo "<td>".($i > 7 ? ($yearlyCollection) : ($sevenYearsPrincipal))."</td>";
+                                echo "<td>".($i > 7 ? 0 : number_format($yearlyInterest, 2, '.', ''))."</td>";
+                                echo "<td>".$yearlyCollection."</td>";
                                 echo "<td>".$balance."</td>";
                                 echo "</tr>";
                             }else{
@@ -1067,7 +1075,7 @@ function numberTowords($num)
                 <table style="width:100%;">
                     <tr class="text-center">
                         <td>
-                            <b>BARILI PRIME LENDING CORPORATION</b> <br>
+                            <b>INDO - PACIFIC LENDING CORPORATION</b> <br>
                             ( LENDER )
                         </td>
                         <td>
