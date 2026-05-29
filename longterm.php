@@ -1015,8 +1015,15 @@ function numberTowords($num)
                             $interest = 0;
                             if(floatval($amountData) >= 450000){
                                
-                                $interest = ( ( $amountData * .01 ) * 120 ) / 7 ;
-                                $principal = $i > 7 ? 121000 : 121000 - $interest;
+                                $interest = ( $amountData * .01 ) ;
+
+                                $interestTenYears = $interest * 120 ;
+                                $interestSevenYear = $interestTenYears / 7;
+
+                                $principalPayment = $amountData / 120;
+
+                                $totalPaymentPerAnnum =  ( $principalPayment + $interest ) * 12;
+                                $principal = $i > 7 ? $totalPaymentPerAnnum : $totalPaymentPerAnnum - $interest;
                                 $totalpayment = $principal + $interest;
                                 $balance = $i > 7 ? floatval($balance) - floatval($totalpayment)  : floatval($balance) - floatval($principal);
 
