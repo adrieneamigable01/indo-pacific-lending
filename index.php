@@ -393,7 +393,7 @@ $list = $conn->query("SELECT * FROM loan_applications ORDER BY id DESC");
                         <div class="col-md-6 mb-3">
                             <label>Interest Rate</label>
                              <select name="interest_rate" class="form-control">
-                                <option value="1.482">1.482%</option>
+                                <option value="1.428">1.428%</option>
                                 <option value="3">3%</option>
                                 <option value="2">2%</option>
                                 <option value="1">1%</option>
