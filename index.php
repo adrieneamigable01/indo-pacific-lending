@@ -10,8 +10,15 @@ $list = $conn->query("SELECT * FROM loan_applications ORDER BY id DESC");
     <title>Indo Pacific Lending System</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css">
+
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    
+    <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <style>
         body{
@@ -56,6 +63,20 @@ $list = $conn->query("SELECT * FROM loan_applications ORDER BY id DESC");
             background: #ccc;
             border-radius: 10px;
         }
+        .select2-container--open {
+            z-index: 9999999 !important;
+        }
+
+        .select2-dropdown {
+            z-index: 9999999 !important;
+        }
+        .select2-container {
+            width: 100% !important;
+        }
+
+        .select2-container--default {
+            width: 100% !important;
+        }
     </style>
 </head>
 <body>
@@ -80,7 +101,6 @@ $list = $conn->query("SELECT * FROM loan_applications ORDER BY id DESC");
         <div class="d-flex justify-content-between mb-3">
             <h4>Loan Applications</h4>
 
-            <input type="text" id="search" class="form-control w-25" placeholder="Search Borrower">
         </div>
 
         <table class="table table-hover" id="myTable">
@@ -335,36 +355,6 @@ $list = $conn->query("SELECT * FROM loan_applications ORDER BY id DESC");
                                 <!-- DEFAULT CO-MAKER -->
                                 <div class="co-maker-item border rounded p-3 mt-2">
 
-                                    <div class="row">
-
-                                        <div class="col-md-4 mb-2">
-                                            <label>Co-Maker Name</label>
-                                            <input type="text"
-                                                name="cm_name[]"
-                                                class="form-control"
-                                                placeholder="Full Name">
-                                        </div>
-
-                                        <div class="col-md-4 mb-2">
-                                            <label>Phone</label>
-                                            <input type="text"
-                                                name="cm_phone[]"
-                                                class="form-control">
-                                        </div>
-
-                                        <div class="col-md-4 mb-2">
-                                            <label>Address</label>
-                                            <input type="text"
-                                                name="cm_address[]"
-                                                class="form-control">
-                                        </div>
-
-                                    </div>
-
-                                    <button type="button"
-                                            class="btn btn-sm btn-danger removeCoMaker">
-                                        Remove
-                                    </button>
 
                                 </div>
 
@@ -439,7 +429,7 @@ $list = $conn->query("SELECT * FROM loan_applications ORDER BY id DESC");
         </div>
     </div>
 </div>
-
+<script src="https://cdn.jsdelivr.net/npm/lz-string@1.4.4/libs/lz-string.min.js"></script>
 <script>
 $("#search").on("keyup", function() {
     var value = $(this).val().toLowerCase();
@@ -452,82 +442,195 @@ $("#search").on("keyup", function() {
 });
 </script>
 <script>
+let borrowerList = [];
+let cacheKey = "borrower_list";
+let isFetching = false;
 $(document).ready(function(){
+    
+    initBorrowers();
+    $('#myTable').DataTable({
+        pageLength: 10,
+        responsive: true,
+        order: [[0, 'desc']], // sort by ID descending
+        language: {
+            search: "Search borrower:",
+            emptyTable: "No records found"
+        }
+    });
+    let html = `
+    <div class="co-maker-item border rounded p-3 mt-2">
 
-    // ADD CO-MAKER
-    $("#addCoMaker").on("click", function(){
+        <div class="d-flex justify-content-between mb-2">
+            <strong>Co-Maker</strong>
 
-        let html = `
-        <div class="co-maker-item border rounded p-3 mt-2">
+            <label>
+                <input type="checkbox" class="toggleBorrowerSelect">
+                Use Borrower List
+            </label>
+        </div>
 
-            <div class="row">
+        <div class="row">
 
-                <div class="col-md-4 mb-2">
-                    <label>Co-Maker Name</label>
-                    <input type="text" name="cm_name[]" class="form-control">
-                </div>
+            <div class="col-md-4 mb-2 borrower-select-wrapper d-none">
+                <label>Select Borrower</label>
 
-                <div class="col-md-4 mb-2">
-                    <label>Phone</label>
-                    <input type="text" name="cm_phone[]" class="form-control">
-                </div>
-
-                <div class="col-md-4 mb-2">
-                    <label>Address</label>
-                    <input type="text" name="cm_address[]" class="form-control">
-                </div>
-
+                <select class="form-control coMakerSelect select2">
+                    <option value="">SELECT CO-MAKER</option>
+                </select>
             </div>
 
-            <button type="button" class="btn btn-sm btn-danger removeCoMaker">
-                Remove
-            </button>
+            <div class="col-md-4 mb-2">
+                <label>Name</label>
+                <input type="text" name="cm_name[]" class="form-control cm_name">
+            </div>
 
-        </div>`;
+            <div class="col-md-4 mb-2">
+                <label>Phone</label>
+                <input type="text" name="cm_phone[]" class="form-control cm_phone">
+            </div>
 
-        $("#coMakerContainer").append(html);
-    });
+            <div class="col-md-4 mb-2">
+                <label>Address</label>
+                <input type="text" name="cm_address[]" class="form-control cm_address">
+            </div>
 
-    // REMOVE CO-MAKER
-    $(document).on("click", ".removeCoMaker", function(){
-        $(this).closest(".co-maker-item").remove();
-    });
+        </div>
 
-});
-</script>
-<script>
-    $.ajax({
-        url:'https://bplcapi.doitcebutech.com/borrower/all?is_active=1',
-        type:'GET',
-        dataType:'json',
-        success:function(response){
-            console.log(response)
-            $("#bplc_borrower").empty();
-            $("#bplc_borrower").append(
-                    $("<option>").text('SELECT A BORROWER')
-                 );
-            $.each(response.data,function(k,v){
-                 $("#bplc_borrower").append(
-                    $("<option>")
-                    .data({
-                        'lastname':v.lastname,
-                        'firstname':v.firstname,
-                        'middlename':v.middlename,
-                        'mobile':v.mobile,
-                        'email':v.email,
-                        'present_address':v.present_address,
-                        'birthdate':v.birthdate,
-                        'income':v.income,
-                        'gender':v.gender,
-                        'position_type':v.position_type,
-                    })
-                    .text(
-                        v.fullname
-                    )
-                 );
-            })
+        <button type="button" class="btn btn-sm btn-danger removeCoMaker mt-2">
+            Remove
+        </button>
+
+    </div>
+    `;
+
+
+
+    function initBorrowers() {
+
+        let cached = localStorage.getItem(cacheKey);
+
+        if (cached) {
+
+            try {
+                borrowerList = JSON.parse(
+                    LZString.decompressFromUTF16(cached)
+                );
+
+                fillBorrowerDropdown(borrowerList);
+
+            } catch (e) {
+                console.log("Cache corrupted");
+                localStorage.removeItem(cacheKey);
+            }
         }
-    })
+
+        // Always refresh once (NO LOOP)
+        fetchBorrower();
+    }
+
+    function fetchBorrower() {
+      
+        if (isFetching == true) return;
+        isFetching = true;
+        $.ajax({
+            url: 'https://bplcapi.doitcebutech.com/borrower/all?is_active=1',
+            type: 'GET',
+            dataType: 'json',
+            success: function (response) {
+
+                let newData = response.all;
+                
+                borrowerList = newData;
+
+                let compressed = LZString.compressToUTF16(
+                    JSON.stringify(newData)
+                );
+
+                let oldCache = localStorage.getItem(cacheKey);
+
+                // only update if changed
+                if (oldCache !== compressed) {
+                    localStorage.setItem(cacheKey, compressed);
+
+                    fillBorrowerDropdown(newData);
+                }
+
+            },
+            complete: function () {
+                isFetching = false;
+            },
+            error: function () {
+                console.log("API failed");
+            }
+        });
+    }
+
+    function fillDrodown(data){
+                
+       
+        $.each(data,function(k,v){
+            $("#bplc_borrower").append(
+                $("<option>")
+                .data({
+                    'lastname':v.lastname,
+                    'firstname':v.firstname,
+                    'middlename':v.middlename,
+                    'mobile':v.mobile,
+                    'email':v.email,
+                    'present_address':v.present_address,
+                    'birthdate':v.birthdate,
+                    'income':v.income,
+                    'gender':v.gender,
+                    'position_type':v.position_type,
+                })
+                .text(
+                    v.fullname
+                )
+            );
+        })
+
+        
+    }
+
+    function fillBorrowerDropdown(data) {
+
+        let $select = $("#bplc_borrower");
+
+        $select.empty();
+
+        $select.append(`
+            <option value="">SELECT A BORROWER</option>
+        `);
+
+        $.each(data, function (k, v) {
+
+            let fullName = `${v.firstname || ''} ${v.lastname || ''}`;
+
+            $select.append(`
+                <option
+                    value="${v.borrower_id}"
+                    data-lastname="${v.lastname}"
+                    data-firstname="${v.firstname}"
+                    data-middlename="${v.middlename}"
+                    data-mobile="${v.mobile}"
+                    data-email="${v.email}"
+                    data-present_address="${v.present_address}"
+                    data-birthdate="${v.birthdate}"
+                    data-income="${v.income}"
+                    data-gender="${v.gender}"
+                    data-position_type="${v.position_type}">
+                    ${fullName}
+                </option>
+            `);
+        });
+        $("#bplc_borrower").select2({
+            width: 'resolve',
+            dropdownParent: $("#borrowerModal"),
+            placeholder: "Search borrower...",
+            allowClear: true
+        });
+    }
+
     $("#bplc_borrower").on("change", function () {
 
         let selected = $(this).find("option:selected");
@@ -562,8 +665,141 @@ $(document).ready(function(){
         $(":input[name='basic_salary']").val(income);
         $(":input[name='annual_income']").val(annual_income);
         $(":input[name='gender']").val(gender);
-        $(":input[name='position_name']").val(position_type);
     });
+
+
+    // ADD CO-MAKER
+    /* =========================================
+    ADD CO-MAKER
+    ========================================= */
+    $("#addCoMaker").on("click", function(){
+       
+        let html = `
+        <div class="co-maker-item border rounded p-3 mt-2">
+
+            <div class="d-flex justify-content-between mb-2">
+                <strong>Co-Maker</strong>
+
+                <label>
+                    <input type="checkbox" class="toggleBorrowerSelect">
+                    Use Borrower List
+                </label>
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-4 mb-2 borrower-select-wrapper d-none">
+                    <label>Select Borrower</label>
+
+                    <select class="form-control coMakerSelect select2">
+                        ${buildBorrowerOptions()}
+                    </select>
+                </div>
+
+                <div class="col-md-4 mb-2">
+                    <label>Name</label>
+                    <input type="text" name="cm_name[]" class="form-control cm_name">
+                </div>
+
+                <div class="col-md-4 mb-2">
+                    <label>Phone</label>
+                    <input type="text" name="cm_phone[]" class="form-control cm_phone">
+                </div>
+
+                <div class="col-md-4 mb-2">
+                    <label>Address</label>
+                    <input type="text" name="cm_address[]" class="form-control cm_address">
+                </div>
+
+            </div>
+
+            <button type="button" class="btn btn-sm btn-danger removeCoMaker mt-2">
+                Remove
+            </button>
+
+        </div>`;
+         let $html = $(html);
+        $("#coMakerContainer").append(html);
+        $html.find(".coMakerSelect").select2({
+            width: '100%',
+            placeholder: "Select Co-Maker",
+            dropdownParent: $('#borrowerModal')
+        });
+
+
+    });
+
+    function buildBorrowerOptions() {
+
+        let options = `<option value="">SELECT CO-MAKER</option>`;
+    
+        $.each(borrowerList, function(k, v){
+
+            let fullName = (v.firstname || '') + ' ' + (v.lastname || '');
+
+            options += `
+                <option
+                    value="${v.borrower_id}"
+                    data-name="${fullName}"
+                    data-phone="${v.mobile || ''}"
+                    data-address="${v.present_address || ''}">
+                    ${fullName}
+                </option>
+            `;
+        });
+
+        return options;
+    }
+
+    /* =========================================
+    SELECT CO-MAKER
+    ========================================= */
+    $(document).on("change", ".coMakerSelect", function(){
+
+        let selected = $(this).find("option:selected");
+
+        let parent = $(this).closest(".co-maker-item");
+
+        parent.find(".cm_name").val(selected.data("name") || "");
+        parent.find(".cm_phone").val(selected.data("phone") || "");
+        parent.find(".cm_address").val(selected.data("address") || "");
+
+    });
+
+
+
+    // REMOVE CO-MAKER
+    $(document).on("click", ".removeCoMaker", function(){
+        $(this).closest(".co-maker-item").remove();
+    });
+
+    $(document).on("change", ".toggleBorrowerSelect", function(){
+
+    let parent = $(this).closest(".co-maker-item");
+
+    let wrapper = parent.find(".borrower-select-wrapper");
+
+    if($(this).is(":checked")){
+
+        wrapper.removeClass("d-none");
+
+        wrapper.find("select").select2({
+            width: '100%',
+            placeholder: 'SELECT CO-MAKER'
+        });
+
+    } else {
+
+        wrapper.addClass("d-none");
+
+        // reset values
+        parent.find(".cm_name").val("");
+        parent.find(".cm_phone").val("");
+        parent.find(".cm_address").val("");
+    }
+
+});
+});
 </script>
 </body>
 </html>
