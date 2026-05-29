@@ -960,7 +960,7 @@ function numberTowords($num)
                     <tbody>
                         <tr>
                             <td style="width:50%;">LENDER</td>
-                            <td style="width:50%;">INDOPACIFIC LENDING CORPORATION</td>
+                            <td style="width:50%;">INDO - PACIFIC LENDING CORPORATION</td>
                         </tr>
                         <tr>
                             <td style="width:50%;">BORROWER</td>
@@ -1108,7 +1108,7 @@ function numberTowords($num)
                                 (Borrower)
                             </td>
                             <td>
-                                <b><?php echo array_key_exists($i + 1, $comakers) ? $comakers[$i + 1]['name'].' (Borrower)'  : "" ?></b>
+                                <b><?php echo array_key_exists($i + 1, $comakers) ? $comakers[$i + 1]['name'].'<br>'.' (Borrower)'  : "" ?></b>
                             </td>
                         </tr>
                         <br>
