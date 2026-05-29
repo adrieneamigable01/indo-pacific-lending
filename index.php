@@ -506,7 +506,7 @@ $(document).ready(function(){
             $("#bplc_borrower").append(
                     $("<option>").text('SELECT A BORROWER')
                  );
-            $.each(response.all,function(k,v){
+            $.each(response.data,function(k,v){
                  $("#bplc_borrower").append(
                     $("<option>")
                     .data({
@@ -516,6 +516,10 @@ $(document).ready(function(){
                         'mobile':v.mobile,
                         'email':v.email,
                         'present_address':v.present_address,
+                        'birthdate':v.birthdate,
+                        'income':v.income,
+                        'gender':v.gender,
+                        'position_type':v.position_type,
                     })
                     .text(
                         v.fullname
@@ -542,13 +546,23 @@ $(document).ready(function(){
         let mobile = selected.data("mobile") || "";
         let email = selected.data("email") || "";
         let present_address = selected.data("present_address") || "";
+        let birthdate = selected.data("birthdate") || "";
+        let income = selected.data("income") || "";
+        let annual_income = parseFloat(selected.data("income")) * 12 || "";
+        let gender = selected.data("gender")|| "";
+        let position_type = selected.data("position_type");
 
         $("input[name='last_name']").val(lastname);
         $("input[name='first_name']").val(firstname);
         $("input[name='middle_name']").val(middlename);
         $("input[name='mobile_no']").val(mobile);
+        $(":input[name='home_address']").val(present_address);
         $("input[name='email_address']").val(email);
-        $("input[name='home_address']").val(present_address);
+        $(":input[name='date_of_birth']").val(birthdate);
+        $(":input[name='basic_salary']").val(income);
+        $(":input[name='annual_income']").val(annual_income);
+        $(":input[name='gender']").val(gender);
+        $(":input[name='position_name']").val(position_type);
     });
 </script>
 </body>
