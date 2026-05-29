@@ -149,6 +149,17 @@ $list = $conn->query("SELECT * FROM loan_applications ORDER BY id DESC");
                 <div class="modal-body">
 
                     <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <label>FROM BPLC BORROWER</label>
+                             <select id="bplc_borrower" class="form-control">
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        
+                        
+
 
                         <div class="col-md-4 mb-3">
                             <label>Last Name</label>
@@ -483,6 +494,62 @@ $(document).ready(function(){
     });
 
 });
+</script>
+<script>
+    $.ajax({
+        url:'https://bplcapi.doitcebutech.com/borrower/all?is_active=1',
+        type:'GET',
+        dataType:'json',
+        success:function(response){
+            console.log(response)
+            $("#bplc_borrower").empty();
+            $("#bplc_borrower").append(
+                    $("<option>").text('SELECT A BORROWER')
+                 );
+            $.each(response.all,function(k,v){
+                 $("#bplc_borrower").append(
+                    $("<option>")
+                    .data({
+                        'lastname':v.lastname,
+                        'firstname':v.firstname,
+                        'middlename':v.middlename,
+                        'mobile':v.mobile,
+                        'email':v.email,
+                        'present_address':v.present_address,
+                    })
+                    .text(
+                        v.fullname
+                    )
+                 );
+            })
+        }
+    })
+    $("#bplc_borrower").on("change", function () {
+
+        let selected = $(this).find("option:selected");
+
+        // Example:
+        // <option 
+        //    value="1"
+        //    data-last_name="DOE"
+        //    data-first_name="JOHN"
+        //    data-middle_name="SMITH">
+        // </option>
+
+        let lastname = selected.data("lastname") || "";
+        let firstname = selected.data("firstname") || "";
+        let middlename = selected.data("middlename") || "";
+        let mobile = selected.data("mobile") || "";
+        let email = selected.data("email") || "";
+        let present_address = selected.data("present_address") || "";
+
+        $("input[name='last_name']").val(lastname);
+        $("input[name='first_name']").val(firstname);
+        $("input[name='middle_name']").val(middlename);
+        $("input[name='mobile_no']").val(mobile);
+        $("input[name='email_address']").val(email);
+        $("input[name='home_address']").val(present_address);
+    });
 </script>
 </body>
 </html>
