@@ -333,6 +333,7 @@ $list = $conn->query("SELECT * FROM loan_applications WHERE isActive = 1 ORDER B
                                         <select name="primary_card_name" class="form-control">
                                             <option value="Development Bank of the Philippines (DBP)">Development Bank of the Philippines (DBP)</option>
                                             <option value="LAND BANK OF THE PHILIPPINES ( UMID )">LAND BANK OF THE PHILIPPINES ( UMID )</option>
+                                            <option value="UNION BANK OF THE PHILIPPINES ( UBP )">UNION BANK OF THE PHILIPPINES ( UBP )</option>
                                         </select>
                                     </div>
                                     <div class="col-md-9">
@@ -345,6 +346,7 @@ $list = $conn->query("SELECT * FROM loan_applications WHERE isActive = 1 ORDER B
                                         <select name="secondary_card_name" class="form-control">
                                             <option value="Development Bank of the Philippines (DBP)">Development Bank of the Philippines (DBP)</option>
                                             <option value="LAND BANK OF THE PHILIPPINES ( UMID )">LAND BANK OF THE PHILIPPINES ( UMID )</option>
+                                            <option value="UNION BANK OF THE PHILIPPINES ( UBP )">UNION BANK OF THE PHILIPPINES ( UBP )</option>
                                         </select>
                                     </div>
                                     <div class="col-md-9">
@@ -457,11 +459,11 @@ $(document).ready(function(){
     $('#myTable').DataTable({
         pageLength: 10,
         responsive: true,
-        order: [[0, 'desc']], // sort by ID descending
+        order: [[0, 'asc']], // sort by ID descending
         language: {
             search: "Search borrower:",
             emptyTable: "No records found"
-        }
+        },
     });
     let html = `
     <div class="co-maker-item border rounded p-3 mt-2">
