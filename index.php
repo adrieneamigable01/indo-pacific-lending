@@ -383,6 +383,7 @@ $list = $conn->query("SELECT * FROM loan_applications WHERE isActive = 1 ORDER B
                                         <select name="loan_type" class="form-control">
                                             <option value="LONG TERM LOAN">LONG TERM LOAN</option>
                                             <option value="SHORT TERM LOAN">SHORT TERM LOAN</option>
+                                            <option value="INTEREST ONLY">INTEREST ONLY</option>
                                         </select>
                                     </div>
 

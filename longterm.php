@@ -1051,7 +1051,10 @@ function percentageToWords($number)
                         $term = 12;
                         $totalpayment = 0;
                         $date = date("Y-m-d");
-                        if(floatval($amountData) >= 450000){
+                        if(strtoupper($data['loan_type']) == "LONG TERM LOAN"){
+                            $term = 10;
+                        }
+                        if(strtoupper($data['loan_type']) == "INTEREST ONLY"){
                             $term = 10;
                         }
                         for ($i = 1; $i <= $term ; $i++) {
@@ -1064,7 +1067,7 @@ function percentageToWords($number)
                             
                             $principal = 0;
                             $interest = 0;
-                            if(floatval($amountData) >= 450000){
+                            if(strtoupper($data['loan_type']) == "LONG TERM LOAN"){
                                
                                 $principal = $amountData;
                                 
@@ -1088,6 +1091,25 @@ function percentageToWords($number)
                                 echo "<td>".($i > 7 ? ($yearlyCollection) : ($sevenYearsPrincipal))."</td>";
                                 echo "<td>".($i > 7 ? 0 : number_format($yearlyInterest, 2, '.', ''))."</td>";
                                 echo "<td>".$yearlyCollection."</td>";
+                                echo "<td>".$balance."</td>";
+                                echo "</tr>";
+                            }else if(strtoupper($data['loan_type']) == "INTEREST ONLY"){
+                               
+                                $principal = $amountData;
+                                
+                                $interest = (float)($principal) * ((float)($data['interest_rate']) / 100);
+                        
+                               
+                                $date = date("Y-m-d");
+
+                                $yearlyInterest = ($interest * 12);
+
+                                // $yearlyInterest = number_format($yearlyInterest);
+                                echo "<tr>";
+                                echo "<td>".$i."</td>";
+                                echo "<td>0</td>";
+                                echo "<td>".number_format($yearlyInterest, 2, '.', '')."</td>";
+                                echo "<td>".$yearlyInterest."</td>";
                                 echo "<td>".$balance."</td>";
                                 echo "</tr>";
                             }else{
